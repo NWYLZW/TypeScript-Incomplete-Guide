@@ -7,6 +7,7 @@
 **不知道。**
 
 > 这里不会去介绍任何关于 TypeScript 过于基础的信息，主要讲解一些在使用过程中需要注意的问题以及一些奇淫巧技。
+>
 > 如果你想在这里知道 TypeScript 是什么？在这里你无法找到答案，建议阅读[《The TypeScript Handbook》](https://www.typescriptlang.org/docs/handbook/intro.html)。
 
 ### 类型运算
@@ -50,6 +51,10 @@ type T1 = "true" extends `${infer T extends boolean}`
     ? ([T] extends [true] ? 'This is true' : 'This is false')
     : never
 ```
+
+> 其实它很像一个概念[「Pattern Matching（模式匹配）」](https://zh.wikipedia.org/wiki/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D)，或者说就是。
+>
+> 当然在 EcmaScript 中也有一个关于其的[提案](https://github.com/tc39/proposal-pattern-matching)。
 
 除了 infer 的形式声明一个“变量”，还有常见于在 Generic（范型）中的“变量”声明。
 
@@ -120,7 +125,7 @@ type T1 = IsNever<never>
 
 在这里我们需要知道一个关于 `extends` 的问题，实际上 ts 对于类型系统并没有引入过多的运算符，在这里便遇到了与之相关的一个问题，`extends` 他并不只有判断的语义。他同时还存在一个很特殊的情况，他会尝试拆解右值（在 `extends` 右侧的类型）如果为 union type 则按照规则遍历运行得到一个新的 union type。
 
-> 具体关于拆解遍历行为，请参考[如何在 TypeScript 中使用循环]()
+> 具体关于拆解遍历行为，请参考[ts@2.8 - Distributive conditional types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types)
 
 而我们在这里使用 `never` 便是一个特殊的 union type，它有没有任何一个成员，所以遍历它最后便只能得到一个“新的” never 回来，所以我们在这里看起来是无法直接处理这个问题。
 
