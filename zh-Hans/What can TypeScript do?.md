@@ -53,7 +53,7 @@ type T1 = "true" extends `${infer T extends boolean}`
 
 #### `class` 中的范型
 
-除了 infer 的形式声明一个“变量”，还有常见于在 Generic（范型）中的“变量”声明。
+除了 infer 的形式声明一个“变量”，还有常见于在「Generic（范型）」中的“变量”声明。
 
 ```typescript
 type T0<
