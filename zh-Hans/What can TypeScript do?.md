@@ -47,6 +47,9 @@ type T1 = "true" extends `${infer T extends boolean}`
 > 其实它很像一个概念[「Pattern Matching（模式匹配）」](https://zh.wikipedia.org/wiki/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D)，或者说就是。
 >
 > 当然在 ECMAScript 中也有一个相关的[提案](https://github.com/tc39/proposal-pattern-matching)。
+>
+> 扩展阅读：
+> * [Type inference in conditional types](https://github.com/Microsoft/TypeScript/pull/21496)
 
 #### `class` 中的范型
 
