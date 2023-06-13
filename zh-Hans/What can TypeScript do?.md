@@ -2,7 +2,7 @@
 
 ## 类型运算
 
-类型是一种信息，信息可以按照定义的规则进行运算，我们可以通过传入的类型通过一系列的运算去得到一个新的类型，这就是类型运算。
+在 TypeScript 中我们可以将类型理解为一个具备一定特征的集合，该集合可以按照 TypeScript 中预定义的规则进行构造，我们可以通过传入的类型通过一系列的运算去得到一个新的类型，这就是类型运算。
 
 ## “变量”声明
 
@@ -221,3 +221,19 @@ type T3 = IsEqual<A, any>
 ### 介于 TypeScript 与 JavaScript 之间
 
 在这里我将 `as`, `is`, `satisfies` 和 `in` 也归类于此节，实际上来说它们也算是确保一个什么类型的行为，只是位于 TypeScript 与 JavaScript 的边界中，将变量的类型显式的与目标的类型按照规则进行匹配。
+
+对于 `as` 这种常见的操作符来说，一般会在几个位置中出现。
+* 作为 JavaScript 与 TypeScript 的交界处，将某一个 JavaScript 中的值作为一个类型去与 TypeScript 中的类型进行匹配
+* 作为 TypeScript 中的类型断言，将某一个 TypeScript 中的类型作为一个类型去与 TypeScript 中的类型进行匹配
+
+```typescript
+interface A {
+    a: string
+}
+// 作为 JavaScript 与 TypeScript 的交界处
+const a = { a: '1' } as A
+const b = { b: 1 } as A // TS2352: Conversion of type '{ b: number; }' to type 'A' may be a mistake
+                        // because neither type sufficiently overlaps with the other.
+                        // If this was intentional, convert the expression to 'unknown' first.
+                        // Property 'a' is missing in type '{ b: number; }' but required in type 'A'.
+```
