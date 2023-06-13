@@ -223,8 +223,10 @@ type T3 = IsEqual<A, any>
 在这里我将 `as`, `is`, `satisfies` 和 `in` 也归类于此节，实际上来说它们也算是确保一个什么类型的行为，只是位于 TypeScript 与 JavaScript 的边界中，将变量的类型显式的与目标的类型按照规则进行匹配。
 
 对于 `as` 这种常见的操作符来说，一般会在几个位置中出现。
-* 作为 JavaScript 与 TypeScript 的交界处，将某一个 JavaScript 中的值作为一个类型去与 TypeScript 中的类型进行匹配
-* 作为 TypeScript 中的类型断言，将某一个 TypeScript 中的类型作为一个类型去与 TypeScript 中的类型进行匹配
+* 作为 JavaScript 与 TypeScript 的交界处，将某一个 JavaScript 中的值作为一个类型去与 TypeScript 中的类型进行断言
+* 作为 TypeScript 中的类型断言，将某一个 TypeScript 中的类型作为一个类型去与 TypeScript 中的类型进行断言
+
+在这里我采用了[《TypeScript Deep Dive》](https://basarat.gitbook.io/typescript/type-system/type-assertion#type-assertion-vs.-casting)中的说法，倾向于 `as` 是作为一个「Assertion（断言）」，而不是一个「Casting（转化）」。
 
 ```typescript
 interface A {
@@ -236,4 +238,6 @@ const b = { b: 1 } as A // TS2352: Conversion of type '{ b: number; }' to type '
                         // because neither type sufficiently overlaps with the other.
                         // If this was intentional, convert the expression to 'unknown' first.
                         // Property 'a' is missing in type '{ b: number; }' but required in type 'A'.
+// 在上面我们断言了 `{ b: 1 }` 是一个 A 类型，但是实际上他完全和 A 没有关系
+// 于是乎 TypeScript 便也给我们抛出来了一个错误
 ```
