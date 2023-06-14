@@ -323,7 +323,7 @@ const c6 = c5 as C // TS2352: Conversion of type 'readonly [2]' to type 'C' may 
                    // If this was intentional, convert the expression to 'unknown' first.
                    //   The type 'readonly [2]' is 'readonly' and cannot be assigned to the mutable type 'C'.
 ```
-在上面关于 B 和 C 类型的测试中，我们可以看到一旦 literal primitive type 进入到 `{}`, `[]` 中便会丢失该特性，那么我们再来尝试将其拆出来进行验证。
+在上面关于 B 和 C 类型的测试中，我们可以看到一旦 literal primitive type 进入到 `{}`、`[]` 中便会丢失该特性，那么我们再来尝试将其拆出来进行验证。
 
 ```typescript
 const b00 = 2 as B['b']
