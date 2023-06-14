@@ -146,6 +146,13 @@ type T0 = IsNever<never>
 
 简单的介绍完了，接下来我们利用一下「输入类型是逆变的而对输出类型是协变的」这一点做一些有趣的事情，在这里我假设一个需求：当俩个函数类型为何种关系的时候能对应的函数类型能被另一个函数类型所替换。
 ```typescript
+interface A {
+  a: string
+}
+interface B {
+  a: string
+  b: number
+}
 declare function fxo(): A
 declare function fyo(): B
 
