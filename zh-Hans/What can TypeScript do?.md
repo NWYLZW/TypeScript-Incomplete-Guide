@@ -243,11 +243,26 @@ interface A {
     a: string
 }
 // 作为 JavaScript 与 TypeScript 的交界处
-const a = { a: '1' } as A
-const b = { b: 1 } as A // TS2352: Conversion of type '{ b: number; }' to type 'A' may be a mistake
-                        // because neither type sufficiently overlaps with the other.
-                        // If this was intentional, convert the expression to 'unknown' first.
-                        // Property 'a' is missing in type '{ b: number; }' but required in type 'A'.
+const a0 = { a: '1' } as A
+const a1 = { b: 1 } as A // TS2352: Conversion of type '{ b: number; }' to type 'A' may be a mistake
+                         // because neither type sufficiently overlaps with the other.
+                         // If this was intentional, convert the expression to 'unknown' first.
+                         // Property 'a' is missing in type '{ b: number; }' but required in type 'A'.
 // 在上面我们断言了 `{ b: 1 }` 是一个 A 类型，但是实际上他完全和 A 没有关系
 // 于是乎 TypeScript 便也给我们抛出来了一个错误
+const a2 = {  } as A
+const a3 = { a: '1', b: 1 } as A
+
+type A0 = { a: string } extends A ? true : false
+//   ^? type A0 = true
+type A1 = { b: number } extends A ? true : false
+//   ^? type A1 = false
+// 在上面的 `{}` 实际上被**隐式推断**为了 `any`，所以这里使用 `{}` 进行测试
+// 这里我们暂且记住**隐式推断**，在下文中我会去解释他
+type A2 = [any] extends [A] ? true : false
+//   ^? type A2 = true
+type A3 = { a: string, b: number } extends A ? true : false
+//   ^? type A3 = true
 ```
+
+上面是我们对 `as` 的一个简单的了解，他的行为很类似于使用 `extends` 对俩个类型进行推断。但是我们也从中发现了一些令人感到十分疑惑不解的部分，为什么我们使用 `{}` 会被**隐式推断**为 `any` 呢？他会不会在其他的地方被触发呢？
