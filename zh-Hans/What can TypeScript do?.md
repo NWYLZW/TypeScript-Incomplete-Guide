@@ -109,7 +109,7 @@ type T2 = IsString<boolean>
 //   ^? type T2 = false
 ```
 
-另外的，时常会有一些特殊情况我们需要去处理，比如这个类型 [`never`](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type)。在 TypeScript 中，这个类型意味着一个不存在值的类型，从集合的角度来看，便是空集。
+另外的，时常会有一些特殊情况我们需要去处理，比如这个类型 [`never`](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type)。在 TypeScript 中，这个类型意味着一个不存在值的类型，从集合的角度来看，便是[空集](https://zh.wikipedia.org/wiki/%E7%A9%BA%E9%9B%86)、[单位元（幺元）](https://zh.wikipedia.org/zh-cn/%E5%96%AE%E4%BD%8D%E5%85%83)。
 基本知识我们了解到了，那我们来思考一下一个问题，我如果通过 `extends` 运算去判断一个类型是不是 `never` 会发生什么呢？
 ```typescript
 type T0 = never extends never ? true : false
