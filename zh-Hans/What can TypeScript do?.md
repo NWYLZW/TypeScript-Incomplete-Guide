@@ -85,7 +85,8 @@ type T0 = {
 * 将某些 Property 通过一定的规则删除掉
   详情可以参考 [ts@4.1 - Key Remapping via `as`](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as) 。
 
-有时候我们可能会遇到一种特殊的情况，定义一个嵌套的类型
+<!-- TODO 讲一讲怎么动态的使用 class infer 出一个嵌套类型 -->
+<!-- 有时候我们可能会遇到一种特殊的情况，定义一个嵌套的类型 -->
 
 ### 什么“变量”
 
