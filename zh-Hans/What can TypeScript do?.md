@@ -347,4 +347,8 @@ const c01 = 2 as C[0]
 
 所以其实除了 `as any as T` 还有 `as unknown`、`as never` 均可用于解决该问题。
 
-
+> 拓展阅读：
+> * [Type hierarchy tre](https://www.zhenghao.io/posts/type-hierarchy-tree)
+> * [Unknown vs any](https://stackoverflow.com/a/67314534/15375383)
+>
+> 相比较使用 `any` 作为中间类型，使用 `unknown` 会更好，因为前者是编译器开的洞，至于为什么不是 `never` 呢，主要还是语义看起来有点奇怪。
