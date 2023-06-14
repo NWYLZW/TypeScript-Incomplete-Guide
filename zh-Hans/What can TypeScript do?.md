@@ -48,7 +48,7 @@ type T1 = "true" extends `${infer T extends boolean}`
 >
 > 当然在 ECMAScript 中也有一个相关的[提案](https://github.com/tc39/proposal-pattern-matching)。
 >
-> 扩展阅读：
+> 拓展阅读：
 > * [Type inference in conditional types](https://github.com/Microsoft/TypeScript/pull/21496)
 
 #### 类型中的泛型
@@ -346,3 +346,5 @@ const c01 = 2 as C[0]
 在 top type 与 bottom type 之间的任意类型，都可以通过 more specific 和 less specific 来到 top 或者 bottom 中，再从其前往任意一个类型，从而解决了不同类型之间的隔断。
 
 所以其实除了 `as any as T` 还有 `as unknown`、`as never` 均可用于解决该问题。
+
+
