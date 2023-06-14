@@ -80,8 +80,8 @@ type T0 = {
 }
 ```
 
-在这里可能出现俩个需求
-* 修改前面的 Property 的类型，但是不去修改后面被使用的 K 的类型
+通过这个我们可以实现一些小需求
+* 修改前面的 Property 的类型，但是不去修改 Value 引用位置 K 的类型
 * 将某些 Property 通过一定的规则删除掉
   详情可以参考 [ts@4.1 - Key Remapping via `as`](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as) 。
 
