@@ -58,7 +58,7 @@ type T1 = "true" extends `${infer T extends boolean}`
 ```typescript
 type T0<
     A,
-    // 直接定义间接类型变量（这里并没有描述为「Constraint（约束）」，但是主要想阐述的是在这里的作用，你能这么用）
+    // 直接定义间接类型变量（这里并没有描述为「Constraint（约束）」，因为主要想阐述的是在这里的作用，你能这么用）
     B extends A,
     // 同时支持定义 type 一样的运算
     C extends A extends [infer A0] ? A0 : never,
