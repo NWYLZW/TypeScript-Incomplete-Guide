@@ -51,9 +51,9 @@ type T1 = "true" extends `${infer T extends boolean}`
 > 扩展阅读：
 > * [Type inference in conditional types](https://github.com/Microsoft/TypeScript/pull/21496)
 
-#### `class` 中的范型
+#### `class` 中的泛型
 
-除了 infer 的形式声明一个“变量”，还有常见于在「Generic（范型）」中的“变量”声明。
+除了 infer 的形式声明一个“变量”，还有常见于在「Generic（泛型）」中的“变量”声明。
 
 ```typescript
 type T0<
@@ -119,7 +119,7 @@ type IsNever<T> = T extends never ? true : false
 
 type T1 = IsNever<never>
 //   ^? type T1 = never
-// 但是当我们在范型中使用他的时候却发现变成了 never
+// 但是当我们在泛型中使用他的时候却发现变成了 never
 ```
 
 在这里我们需要知道一个关于 `extends` 的问题，实际上 ts 对于类型系统并没有引入过多的运算符，在这里便遇到了与之相关的一个问题，`extends` 他并不只有判断的语义。他同时还存在一个很特殊的情况，他会尝试拆解右值（在 `extends` 右侧的类型）如果为 union type 则按照规则遍历运行得到一个新的 union type。
@@ -142,7 +142,7 @@ type T0 = IsNever<never>
 
 在上面我们主要讨论的了作为非函数类型他们之间“是不是”的一个判断方式行为以及特殊情况，接下来我们便要去了解更深入一点的关于函数的判断规则。
 
-函数作为 JavaScript 中的一等公民，在类型系统中也有举足轻重的地位，函数之间的关系判断使用的也是 `extends` 但是在这里存在一些问题我们需要注意的，在一般情况（不涉及范型与函数重载）下满足[类型构造符→对输入类型是逆变的而对输出类型是协变的。](https://zh.wikipedia.org/wiki/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98#:~:text=%E7%B1%BB%E5%9E%8B%E6%9E%84%E9%80%A0%E7%AC%A6%E2%86%92%E5%AF%B9%E8%BE%93%E5%85%A5%E7%B1%BB%E5%9E%8B%E6%98%AF%E9%80%86%E5%8F%98%E7%9A%84%E8%80%8C%E5%AF%B9%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B%E6%98%AF%E5%8D%8F%E5%8F%98%E7%9A%84%E3%80%82)
+函数作为 JavaScript 中的一等公民，在类型系统中也有举足轻重的地位，函数之间的关系判断使用的也是 `extends` 但是在这里存在一些问题我们需要注意的，在一般情况（不涉及泛型与函数重载）下满足[类型构造符→对输入类型是逆变的而对输出类型是协变的。](https://zh.wikipedia.org/wiki/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98#:~:text=%E7%B1%BB%E5%9E%8B%E6%9E%84%E9%80%A0%E7%AC%A6%E2%86%92%E5%AF%B9%E8%BE%93%E5%85%A5%E7%B1%BB%E5%9E%8B%E6%98%AF%E9%80%86%E5%8F%98%E7%9A%84%E8%80%8C%E5%AF%B9%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B%E6%98%AF%E5%8D%8F%E5%8F%98%E7%9A%84%E3%80%82)
 
 简单的介绍完了，接下来我们利用一下「输入类型是逆变的而对输出类型是协变的」这一点做一些有趣的事情，在这里我假设一个需求：当俩个函数类型为何种关系的时候能对应的函数类型能被另一个函数类型所替换。
 ```typescript
