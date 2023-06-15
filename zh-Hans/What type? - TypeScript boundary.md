@@ -111,8 +111,8 @@ const c01 = 2 as C[0]
 我们再以一图解释一下 `as any as T` 是如何工作的：
 
 <img
-src="../imgs/as_any_as_T.png"
-alt="as any as T"
+    src="../imgs/as_any_as_T.png"
+    alt="as any as T"
 />
 
 在 top type 与 bottom type 之间的任意类型，都可以通过 more specific 和 less specific 来到 top 或者 bottom 中，再从其前往任意一个类型，从而解决了不同类型之间的隔断。
