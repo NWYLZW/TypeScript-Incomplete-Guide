@@ -29,7 +29,7 @@ type A0 = { a: string } extends A ? true : false
 //   ^? type A0 = true
 type A1 = { b: number } extends A ? true : false
 //   ^? type A1 = false
-// 在上面的 `{}` 实际上被**隐式推断**为了 `any`，所以这里使用 `{}` 进行测试
+// 在上面的 `{}` 实际上被**隐式推断**为了 `any`，所以这里使用 `any` 进行测试
 // 这里我们暂且记住**隐式推断**，在下文中我会去解释他
 type A2 = [any] extends [A] ? true : false
 //   ^? type A2 = true
