@@ -10,16 +10,28 @@ type Type0<T> = T extends (
     (...args: infer U) => any
 ) ? U : never
 
+type P = Type0<(a: number, b: string) => void>
+//   ^? type P = [a: number, b: string]
+
 interface Foo<T> {
     a: { b: { c: T } }
 }
 type Type1<T> = T extends (
     Foo<infer U>
 ) ? U : never
+
+type Q = Type1<{
+//   ^? type Q = number
+    a: { b: { c: string } }
+}>
+
 // 同时我们也可以将其运用于数组之中（虽然它可以通过简单的方式访问到）
 type Type2<T> = T extends [infer T0, ...any[]]
     ? T0
     : never
+
+type R = Type2<[1, 2, 3]>
+//   ^? type R = 1
 ```
 
 同时在较高版本 infer 提供了可以约束推断类型的行为（infer 默认推断的类型不可用）。
