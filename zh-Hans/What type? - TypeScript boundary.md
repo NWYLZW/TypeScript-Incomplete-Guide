@@ -124,3 +124,21 @@ const c01 = 2 as C[0]
 > * [Unknown vs any](https://stackoverflow.com/a/67314534/15375383)
 >
 > 相比较使用 `any` 作为中间类型，使用 `unknown` 会更好，因为前者是编译器开的洞，至于为什么不是 `never` 呢，主要还是语义看起来有点奇怪。
+
+除了上面聊到的 `as` 一个具体的类型，我们还可以使用 [ts@3.4 - const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) 去将一个值转化为其对应的 literal type，主要是为了解决 `const` 的类型推断问题。
+
+同时与 const 相关的还有一些奇妙的东西，如果我们想这么做：
+```typescript
+declare function foo<T extends readonly number[]>(t: T): T[0]
+const t0 = foo([2])
+//    ^? const t: number
+// 如果我们需要一个被 `[]`、`{}` 包裹后的字面量的 const 类型，我们只能要求用户主动声明 const
+const t1 = foo([2] as const)
+//    ^? const t: 2
+```
+但是这个很明显对 JavaScript 用户或者特定需求下的调用方显得不是那么友好，如果某个函数一定需要一个 const 的类型去进去运算的时候我们还一定要用户手动进行 `as const` 显然是不太合适的，当然我们的 TypeScript 也考虑到了该种情况的需求，新增了[ts@5.0 - `const`
+Type Parameters](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters)特性。不过相对来说 5.0 对于目前编写时来说还算是一个相对比较新的版本，还未被普遍采用，那么我们有没有[别的办法](./What%20type%3F%20-%20TypeScript%20boundary%20-%20Narrow%20type.md)来实现我们的需求呢？
+
+> 拓展阅读：
+> * [Const contexts for literal expressions](https://github.com/microsoft/TypeScript/pull/29510)
+> * [`const` modifier on type parameters](https://github.com/microsoft/TypeScript/pull/51865)
