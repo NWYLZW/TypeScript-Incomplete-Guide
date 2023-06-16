@@ -108,6 +108,12 @@ type B1 = typeof fmo extends typeof fno ? true : false
 
 好了，到这里我们便对函数的逆变协变有了一定的了解，我们来整点特殊的类型来看看应该怎么做。
 ```typescript
+interface A {
+  a: string
+}
+interface B {
+  a: '1'
+}
 declare function f0<G>(g: G): G extends A ? 1 : 2
 declare function f1<G>(g: G): G extends B ? 1 : 2
 
@@ -115,9 +121,17 @@ let t0 = f0({ a: '' })
 //  ^? let t0: 1
 t0 = f1({ a: '' }) // Type '2' is not assignable to type '1'.ts(2322)
 ```
-我们回忆下在上面的总结「当输出类型为协变时，即被替换目标的输出类型**小于或等于**替换目标时才能使得前者能替换为后者」。那么在这里假设我们需要将 f0 替换为 f1，那么我们就需要让 f0 的输出类型**小于或等于** f1 的输出类型。
-在什么情况下 f0 的输出类型会**小于或等于** f1 的输出类型呢？只有一种情况下 f0 会小于 f1，那就是 `A === B` 的时候，所以我们反向思考一下，如果俩个形如上式的函数能够满足替换关系，那么 `A === B`。
-再转化一下角度「能够满足替换关系」=>「F\<A> extends F\<B>」。
+我们回忆下在上面的总结「当输出类型为协变时，即被替换目标的输出类型**小于或等于**替换目标时才能使得前者能替换为后者」。
+```markdown
+在这里假设我们需要将 f0 替换为 f1
+    => 我们就需要让 f0 的输出类型**小于或等于** f1 的输出类型
+    => f0 的输出类型由 G 与 A 共同决定，f1 也是如此
+    => 俩个函数的 G 都会由用户的输入而决定，无法被保证
+    => 那么这个时候如果需要能够替换，那么就需要 A 的类型**小于或等于** B 的类型
+    => 而该输出类型还受 G 的影响，所以我们需要 G extends A 与 G extends B 都成立
+    => 只有当 `A === B` 时，俩个函数的输出类型才能满足协变关系
+    => 所以我们可以得知 `F<A> extends F<B>` 时，`A === B`
+```
 
 那么我们知道了这个有什么用呢？比如说 any 作为 top type ，使用很多的办法都没有办法判断一个类型是不是 any，但是我们通过这个就能判断你的同事是不是传了个 any 进来了！是不是很有用，那么接下来我们来写一段代码看看：
 ```typescript
@@ -133,10 +147,14 @@ type T1 = IsEqual<A, A>
 //   ^? type T1 = true
 type T2 = IsEqual<A, {
 //   ^? type T2 = true
-    a: string
+  a: string
 }>
-type T3 = IsEqual<A, any>
+type T3 = IsEqual<{
 //   ^? type T3 = false
+  a: '1'
+}, A>
+type T4 = IsEqual<A, any>
+//   ^? type T4 = false
 ```
 
 > 拓展阅读：
