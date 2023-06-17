@@ -73,6 +73,27 @@ type T0<
     E = A extends [infer A0] ? A0 : never,
 > = {}
 ```
+在这里的 type 或者 interface 中的泛型声明，可以在后续的类型运算中使用。但是如果未给定默认值，那么在调用的时候必须传入，并不是很方便。所以这里如果需要让 TypeScript 对其进行计算，那么最好给定一个与 extends 约束相同的默认值（或者 extends 定义一个相对宽泛的类型，在默认值的位置定义更确切需要的类型）。
+
+通过上面的描述，我们可以感觉这种定义的方式似乎并不是很方便，那么我们有没有更符合的场景呢？
+```typescript
+// 在 TypeScript 的函数中，通过编译器对参数的类型推断，我们可以不去定义参数类型，而是由编译器推断出来
+declare function foo<
+    T extends readonly any[],
+    N extends T[0]
+>(t: T): N
+
+const a = foo([1, 2, 3] as const)
+//    ^? const a: 1
+```
+这样看起来就方便了许多了，但是对于这个同时也存在一些已知的问题。当你想传入一个类型，但是不想传入一个类型的时候，则会导致你必须像使用 type 一样去设置一个默认值。
+
+```typescript
+const b = foo<(1 | 2)[]>([1, 2, 3])
+//            ^^^^^^^^^ TS2558: Expected 2 type arguments, but got 1.
+```
+
+这个问题在 TypeScript 中是暂时无法解决的，因为它是一个[已知的问题](https://github.com/microsoft/TypeScript/issues/20122)，并被准备[在 5.2 版本](https://github.com/microsoft/TypeScript/issues/54298#:~:text=Investigate%20Type%20Argument%20Placeholders)中得到[支持](https://github.com/microsoft/TypeScript/pull/26349)。
 
 > 我们可以利用这个做一些常用类型的初始化，但是请注意，尽量减少在这里的类型定义。
 >
