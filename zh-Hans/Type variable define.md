@@ -99,18 +99,25 @@ const b = foo<(1 | 2)[]>([1, 2, 3])
 >
 > 在这里过多过大的类型可能会导致类型不方便被观测检察。
 
-其次便是一个相对来说十分常用的类型定义位置了，在 Property 的位置中我们能够使用 `in` 运算符定义一个 `string | number | symbol` 类型的变量，并在 ValueType 的位置中使用它。
+## 类型中的 PropertyKey
+
+其次便是一个相对来说十分常用的类型定义位置了，在 `{}` 的 PropertyKey 的位置中我们能够使用 `in` 运算符定义一个 `string | number | symbol` 类型的变量，并在 PropertyValue 的位置中使用它。
 
 ```typescript
+// 在这里我们可以将 K 上的 number 形式的字符串通过 infer 转换为对应的 number 类型
+//   _? type T0 = { 1: 1 }
 type T0 = {
-    [K in string | number | symbol]: K
+    [K in '1']: K extends `${infer T extends number}` ? T : never
 }
 ```
 
-通过这个我们可以实现一些小需求
-* 修改前面的 Property 的类型，但是不去修改 Value 引用位置 K 的类型
-* 将某些 Property 通过一定的规则删除掉
-  详情可以参考 [ts@4.1 - Key Remapping via `as`](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as) 。
+我们还可以使用 [ts@4.1 - Key Remapping via `as`](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as) 从而修改 PropertyKey 的名称，而不改变 PropertyValue 中对 `in` 操作符得到的类型进行变动。
+```typescript
+//   _? type T0 = { 2: 1 }
+type T1 = {
+  [K in '1' as '2']: K extends `${infer T extends number}` ? T : never
+}
+```
 
 <!-- TODO 讲一讲怎么动态的使用 class infer 出一个嵌套类型 -->
 <!-- 有时候我们可能会遇到一种特殊的情况，定义一个嵌套的类型 -->
