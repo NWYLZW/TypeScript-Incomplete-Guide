@@ -125,6 +125,8 @@ const c01 = 2 as C[0]
 >
 > 相比较使用 `any` 作为中间类型，使用 `unknown` 会更好，因为前者是编译器开的洞，至于为什么不是 `never` 呢，主要还是语义看起来有点奇怪。
 
+### `as` 与字面量
+
 除了上面聊到的 `as` 一个具体的类型，我们还可以使用 [ts@3.4 - const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) 去将一个值转化为其对应的 literal type，主要是为了解决 `const` 的类型推断问题。
 
 同时与 const 相关的还有一些奇妙的东西，如果我们想这么做：
