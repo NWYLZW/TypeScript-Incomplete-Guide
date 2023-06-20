@@ -46,9 +46,9 @@ const x = foo({ foo: 'foo', bar: 1 })
 // 我们可以回忆一下我们最开始的函数为什么能出现自动推断 literal 的效果
 // 然后我们便可以发现，我们缺少了一个 generic 类型，那么我们便可以尝试加上这个 generic 类型
 
-declare function foo0<G>(x: {
-  [K in string]: G[K]
-}): [typeof x, G[K]]
+declare function foo0<T>(x: {
+  [K in keyof T]: T[K]
+}): [typeof x, T]
 
 const x0 = foo0({ foo: 'foo', bar: 1 })
 //     ^? const x0: [{ foo: string; bar: number; }, { foo: string; bar: number; }]
