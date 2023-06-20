@@ -21,7 +21,7 @@ type Type1<T> = T extends (
 ) ? U : never
 
 type Q = Type1<{
-//   ^? type Q = number
+//   ^? type Q = string
     a: { b: { c: string } }
 }>
 
