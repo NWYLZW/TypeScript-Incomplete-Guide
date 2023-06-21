@@ -1,6 +1,6 @@
 # Narrow Type
 
-在[]()中我们提到了一些关于 TypeScript 的类型边界中的 `as const` 的作用，并了解到了它的一些特性，但是在这里我们可以根据一些 TS 中的特性来自己实现 `as const` 的功能。
+在[介于 TypeScript 与 JavaScript 之间](./What%20type%3F%20-%20TypeScript%20boundary.md)中我们提到了一些关于 TypeScript 的类型边界中的 `as const` 的作用，并了解到了它的一些特性，但是在这里我们可以根据一些 TS 中的特性来自己实现 `as const` 的功能。
 
 对于我们常见的 primitive type 来说，当我们在函数的 Generic 位置进行声明，并在参数位置进行使用的时候，TypeScript 会自动推断出这些类型。
 ```typescript
