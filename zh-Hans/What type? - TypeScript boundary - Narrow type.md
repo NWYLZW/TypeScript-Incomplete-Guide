@@ -2,6 +2,8 @@
 
 在[介于 TypeScript 与 JavaScript 之间](./What%20type%3F%20-%20TypeScript%20boundary.md)中我们提到了一些关于 TypeScript 的类型边界中的 `as const` 的作用，并了解到了它的一些特性，但是在这里我们可以根据一些 TS 中的特性来自己实现 `as const` 的功能。
 
+## 麻烦的 `as const`
+
 对于我们常见的 primitive type 来说，当我们在函数的 Generic 位置进行声明，并在参数位置进行使用的时候，TypeScript 会自动推断出这些类型。
 ```typescript
 declare function f0<G>(g: G): G
@@ -23,6 +25,8 @@ let t0 = f0({ a: 'test' })
 let t1 = f0({ a: 'test' } as const)
 //  ^? let t1: { readonly a: "test"; }
 ```
+
+## 找个出路
 
 虽然我们可以通过显式的声明来达到这个效果，但是这样的话就会显得很麻烦。那么我们有没有别的办法呢？
 首先我们可以发现 TypeScript 其实在面对 `object literal` 的时候，会根据实际参数的类型信息尽可能将类型进行缩小，也就是说实际的类型并没有在传递过程中丢失成宽泛的类型。
@@ -67,6 +71,7 @@ const x1 = foo1({ foo: 'foo', bar: 1 })
 ```
 计划通！接下来我们通过工程化的手段来对他进行封装与优化，首先我们将类型扩充到所有的基础类型。
 
+## 优化一下
 ```typescript
 type Primitive = string | number | boolean | bigint | symbol | undefined | null
 
@@ -94,6 +99,8 @@ const x0 = foo({ foo: 'foo', bar: { baz: true } })
 const x1 = foo([1, 2, true])
 //    ^? const x1: (true | 1 | 2)[]
 ```
+
+### 啊？元组
 我们可以看到类型已经被缩小了，但是没有维持住 tuple 的类型，而是丢失了元素顺序的一个 array。那么我们有没有什么办法来维持住这个行为呢？在这里我们回忆一下我们上面所做的，实际上就是去诱导 TypeScript 的隐式推断，所以我们能不能同样的诱导出 tuple 的类型呢？
 ```typescript
 // 我们可以先看一下这段代码
@@ -126,6 +133,8 @@ const x0 = foo({ foo: 'foo', bar: { baz: true } })
 const x1 = foo([1, 2, true])
 //    ^? const x1: [1, 2, true]
 ```
+
+## 总结
 
 看到这里我们便对 Narrow 类型构造器的机制与实现原理有了一定的了解了，我们可以简单总结一下：
 * 通过一个 generic 类型来诱导 TypeScript 的隐式推断
