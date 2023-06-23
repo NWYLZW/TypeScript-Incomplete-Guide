@@ -144,3 +144,42 @@ Type Parameters](https://www.typescriptlang.org/docs/handbook/release-notes/type
 > 拓展阅读：
 > * [Const contexts for literal expressions](https://github.com/microsoft/TypeScript/pull/29510)
 > * [`const` modifier on type parameters](https://github.com/microsoft/TypeScript/pull/51865)
+
+## 不简单的 `satisfies`
+
+与 `as` 的「在 JavaScript 与 TypeScript 的交界处，将某一个 JavaScript 中的值作为一个类型去与 TypeScript 中的类型进行断言」中的作用类似，不过[稍稍的有点不同](https://github.com/microsoft/TypeScript/issues/47920#:~:text=Desired%20Behavior%20Rundown)。他作为一个在 TypeScript@4.9 中被引入的[新特性](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)，主要是为了解决一些特定的问题，在这里我们不过多对 Handbook 中的内容进行过多的赘述。
+
+### 一个久远的 issue
+
+在古早时期的 TypeScript 的 issue 中有一个关于 [`Exact Types` 的讨论](https://github.com/microsoft/TypeScript/issues/12936)，目前关于这个讨论的部分已经被 `satisfies` 所解决，但是仍然还存有一些需要解决的问题。
+
+首先当我们需要值的类型是被受限的，而不是尽可能宽泛的时候，我们可以使用 `satisfies` 来进行类型的约束，举例子来说：
+```typescript
+interface A {
+  a: string
+}
+
+const a = {
+  a: '132',
+  b: 1
+//^ TS1360: Type '{ a: string; b: number; }' does not satisfy the expected type 'A'.
+//    Object literal may only specify known properties, and 'b' does not exist in type 'A'.
+} satisfies A
+// 我们通过指定我们需要一个 `satisfies` 的 `A` 
+// 那么编译器便帮我们检查了这个值的类型是否出现了不符合 `A` 的约束
+// 在这里是需要满足 `A` 的一个 subtype 或者是 `A` 本身
+```
+但是如果我们通过范型的形式呢？
+```typescript
+interface A {
+  a: string
+}
+
+declare function foo<T extends A>(t: T): T
+
+const a = foo({
+  a: '132',
+  b: 1
+})
+```
+在这里我们可以传递一个 `A` 的 supertype ，但是如果我们不希望被传递一个 supertype 而是一个 subtype 呢？直观的来说，就是我们不想被传递 `b` 这个属性。
