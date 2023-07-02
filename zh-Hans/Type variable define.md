@@ -99,6 +99,10 @@ const b = foo<(1 | 2)[]>([1, 2, 3])
 >
 > 在这里过多过大的类型可能会导致类型不方便被观测检察。
 
+<!-- TODO ### HKT ，但是受限 -->
+
+<!-- TODO ### ThisType??? -->
+
 ## 类型中的 PropertyKey
 
 其次便是一个相对来说十分常用的类型定义位置了，在 `{}` 的 PropertyKey 的位置中我们能够使用 `in` 运算符定义一个 `string | number | symbol` 类型的变量，并在 PropertyValue 的位置中使用它。
